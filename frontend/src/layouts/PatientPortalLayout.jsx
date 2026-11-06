@@ -7,7 +7,7 @@ export default function PatientPortalLayout() {
     <div className="min-h-screen bg-[#F7F9FB] flex">
       <PortalSidebar />
 
-      <main className="flex-1 min-w-0 md:ml-64">
+      <main className="flex-1 min-w-0 pb-20 md:ml-64 md:pb-0">
         <Outlet />
       </main>
     </div>

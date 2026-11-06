@@ -2,9 +2,9 @@
 @import "tailwindcss";
 
 :root {
-  font-family: Inter, sans-serif;
+  font-family: "DM Sans", "Segoe UI", sans-serif;
   color: #243447;
-  background: #F7F9FB;
+  background: #f7f9fb;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
 }
@@ -13,8 +13,130 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
-  min-width: 320px;
   min-height: 100vh;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.auth-page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: clamp(16px, 4vw, 36px);
+  background:
+    radial-gradient(ellipse at 12% 10%, rgba(198, 229, 217, 0.42), transparent 34%),
+    #f4f8f6;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 470px;
+  padding: clamp(24px, 5vw, 42px);
+  border: 1px solid #e6eeea;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 22px 65px rgba(27, 62, 57, 0.09);
+}
+
+.auth-card h1 {
+  letter-spacing: -0.8px;
+}
+
+.auth-card label {
+  display: block;
+  color: #334b57;
+}
+
+.auth-card input,
+.auth-card select {
+  min-height: 46px;
+  border-color: #dce6e2;
+  border-radius: 9px;
+  color: #243b47;
+  background-color: #fff;
+}
+
+.auth-card input::placeholder {
+  color: #9aa8aa;
+}
+
+.auth-card input:focus,
+.auth-card select:focus {
+  border-color: #16877b;
+  outline: 3px solid rgba(22, 135, 123, 0.12);
+}
+
+.auth-card form button[type="submit"] {
+  min-height: 48px;
+  border-radius: 9px;
+  box-shadow: 0 5px 12px rgba(8, 127, 117, 0.12);
+}
+
+.portal-mobile-nav {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .auth-card {
+    max-width: 540px;
+  }
+
+  .portal-mobile-nav {
+    position: fixed;
+    z-index: 45;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    padding: 8px max(8px, env(safe-area-inset-right)) calc(8px + env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left));
+    border-top: 1px solid #e3ebe8;
+    background: rgba(255, 255, 255, 0.97);
+    box-shadow: 0 -7px 22px rgba(22, 56, 51, 0.06);
+    backdrop-filter: blur(12px);
+  }
+
+  .portal-mobile-nav button {
+    display: flex;
+    min-width: 0;
+    min-height: 48px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    border: 0;
+    border-radius: 9px;
+    color: #718187;
+    background: transparent;
+    font-size: 9px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .portal-mobile-nav button[aria-current="page"] {
+    color: #087f75;
+    background: #eff7f3;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }

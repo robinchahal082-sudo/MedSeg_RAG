@@ -127,9 +127,9 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F7F9FB] flex justify-center items-center p-5">
+    <div className="auth-page">
 
-      <div className="bg-white w-full max-w-xl p-8 rounded-2xl shadow-xl">
+      <div className="auth-card !max-w-2xl">
 
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2 mb-7">

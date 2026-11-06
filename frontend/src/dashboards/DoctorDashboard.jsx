@@ -16,10 +16,28 @@ import {
   CalendarDays,
   ShieldCheck,
   Clock,
-  Search
+  FileCheck2,
 } from "lucide-react";
 
 import { apiRequest, logout } from "../services/api";
+
+const demoPatients = [
+  { name: "Jordan Lee", initials: "JL", access: "Records shared", records: 4 },
+  { name: "Casey Morgan", initials: "CM", access: "Records shared", records: 3 },
+  { name: "Taylor Brooks", initials: "TB", access: "Records shared", records: 5 },
+];
+
+const demoRecords = [
+  { title: "Complete blood count", patient: "Jordan Lee", date: "Nov 04, 2026", type: "Lab report" },
+  { title: "Annual check-up summary", patient: "Casey Morgan", date: "Oct 28, 2026", type: "Visit summary" },
+  { title: "Metabolic panel", patient: "Taylor Brooks", date: "Oct 22, 2026", type: "Lab report" },
+];
+
+const demoAppointments = [
+  { patient: "Jordan Lee", visit: "Follow-up consultation", date: "Nov 12", time: "10:30 AM" },
+  { patient: "Casey Morgan", visit: "Routine check-up", date: "Nov 13", time: "2:00 PM" },
+  { patient: "Taylor Brooks", visit: "Review visit", date: "Nov 16", time: "9:15 AM" },
+];
 
 export default function DoctorDashboard() {
   const navigate = useNavigate();
@@ -64,6 +82,10 @@ export default function DoctorDashboard() {
     navigate("/login", { replace: true });
   };
 
+  const scrollToSection = (sectionId) => {
+    document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#F7F9FB]">
@@ -78,7 +100,7 @@ export default function DoctorDashboard() {
     <div className="min-h-screen bg-[#F7F9FB] flex">
 
       {/* SIDEBAR */}
-      <aside className="hidden md:flex w-64 bg-[#142B45] text-white flex-col p-5">
+      <aside className="fixed left-0 top-0 z-40 hidden md:flex h-screen w-64 overflow-y-auto overscroll-contain bg-[#142B45] text-white flex-col p-5">
 
         <div className="flex items-center gap-2 mb-10">
           <div className="bg-teal-600 p-2 rounded-xl">
@@ -157,7 +179,7 @@ export default function DoctorDashboard() {
       </aside>
 
       {/* MAIN CONTENT */}
-      <main className="flex-1 min-w-0">
+      <main className="flex-1 min-w-0 pb-20 md:ml-64 md:pb-0">
 
         {/* TOP NAVBAR */}
         <header className="bg-white border-b px-5 md:px-8 py-4 flex justify-between items-center">
@@ -200,6 +222,15 @@ export default function DoctorDashboard() {
             </p>
           </div>
 
+          <div className="mb-6 flex items-start gap-3 rounded-xl border border-indigo-100 bg-indigo-50 p-4 text-sm text-indigo-900">
+            <ShieldCheck className="mt-0.5 shrink-0 text-indigo-600" size={19} />
+            <p>
+              <span className="font-semibold">Demo data:</span> The sample patients,
+              records, appointments, and counts below are fictional and are not
+              connected to real patient accounts.
+            </p>
+          </div>
+
           {/* VERIFICATION STATUS */}
           <div className="bg-white border rounded-2xl p-5 mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
 
@@ -239,29 +270,29 @@ export default function DoctorDashboard() {
             <StatCard
               icon={<Users/>}
               title="Total Patients"
-              value="0"
-              description="Authorized patients"
+              value="3"
+              description="Sample patients"
             />
 
             <StatCard
               icon={<FileText/>}
               title="Medical Records"
-              value="0"
-              description="Accessible documents"
+              value="12"
+              description="Sample documents"
             />
 
             <StatCard
               icon={<MessageCircle/>}
               title="AI Conversations"
-              value="0"
-              description="Assistant interactions"
+              value="8"
+              description="Sample interactions"
             />
 
             <StatCard
               icon={<CalendarDays/>}
               title="Appointments"
-              value="0"
-              description="Scheduled appointments"
+              value="3"
+              description="Sample appointments"
             />
 
           </div>
@@ -322,20 +353,20 @@ export default function DoctorDashboard() {
 
             </div>
 
-            <div className="text-center py-10">
-
-              <div className="bg-teal-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Users className="text-teal-700" size={30}/>
-              </div>
-
-              <h3 className="font-semibold text-[#142B45]">
-                No authorized patients yet
-              </h3>
-
-              <p className="text-sm text-slate-500 mt-2">
-                Patients who grant you access will appear here.
-              </p>
-
+            <div className="divide-y divide-slate-100">
+              {demoPatients.map((patient) => (
+                <div key={patient.name} className="flex items-center gap-3 py-4">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-teal-50 text-sm font-bold text-teal-800">
+                    {patient.initials}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-semibold text-slate-800">{patient.name}</p>
+                    <p className="mt-1 text-xs text-slate-500">{patient.access}</p>
+                  </div>
+                  <span className="text-xs text-slate-500">{patient.records} sample records</span>
+                  <span className="hidden rounded-full bg-indigo-50 px-2.5 py-1 text-xs font-medium text-indigo-700 sm:inline">Demo</span>
+                </div>
+              ))}
             </div>
 
           </div>
@@ -362,21 +393,47 @@ export default function DoctorDashboard() {
 
             </div>
 
-            <div className="text-center py-10">
-
-              <FileText className="text-teal-700 mx-auto mb-4" size={35}/>
-
-              <h3 className="font-semibold text-[#142B45]">
-                No medical records available
-              </h3>
-
-              <p className="text-sm text-slate-500 mt-2">
-                Authorized patient documents will appear here.
-              </p>
-
+            <div className="divide-y divide-slate-100">
+              {demoRecords.map((record) => (
+                <div key={record.title} className="flex items-center gap-3 py-4">
+                  <div className="rounded-lg bg-teal-50 p-2.5 text-teal-700">
+                    <FileCheck2 size={19} />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-semibold text-slate-800">{record.title}</p>
+                    <p className="mt-1 text-xs text-slate-500">{record.patient} · {record.type}</p>
+                  </div>
+                  <span className="hidden shrink-0 text-xs text-slate-400 sm:inline">{record.date}</span>
+                  <span className="rounded-full bg-indigo-50 px-2.5 py-1 text-xs font-medium text-indigo-700">Demo</span>
+                </div>
+              ))}
             </div>
 
           </div>
+
+          <section className="mb-8 rounded-2xl border bg-white p-6">
+            <div className="mb-4 flex items-center justify-between gap-3">
+              <div>
+                <h2 className="text-lg font-bold text-[#142B45]">Upcoming appointments</h2>
+                <p className="mt-1 text-sm text-slate-500">Example schedule for dashboard preview</p>
+              </div>
+              <CalendarDays className="shrink-0 text-teal-700" />
+            </div>
+            <div className="grid gap-3 md:grid-cols-3">
+              {demoAppointments.map((appointment) => (
+                <article key={`${appointment.patient}-${appointment.date}`} className="rounded-xl border border-slate-100 bg-slate-50 p-4">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-sm font-semibold text-slate-800">{appointment.patient}</span>
+                    <span className="rounded-full bg-indigo-50 px-2 py-1 text-[10px] font-semibold text-indigo-700">Demo</span>
+                  </div>
+                  <p className="mt-2 text-xs text-slate-500">{appointment.visit}</p>
+                  <p className="mt-3 flex items-center gap-1.5 text-xs font-medium text-teal-800">
+                    <Clock size={14} /> {appointment.date} · {appointment.time}
+                  </p>
+                </article>
+              ))}
+            </div>
+          </section>
 
           {/* AI ASSISTANT */}
           <div
@@ -396,12 +453,20 @@ export default function DoctorDashboard() {
                 </h3>
 
                 <p className="text-sm text-slate-600 mt-2">
-                  Ask questions about medical documents that you are authorized to access. Source-grounded document assistance will be available after the RAG module is implemented.
+                  Example interaction preview. The assistant is not connected to patient records yet.
                 </p>
-
-                <span className="inline-block mt-3 bg-white text-teal-700 text-xs font-semibold px-3 py-2 rounded-lg">
-                  Coming Soon
-                </span>
+                <div className="mt-4 space-y-3">
+                  <p className="ml-auto w-fit max-w-full rounded-xl bg-white px-4 py-3 text-sm text-slate-700">
+                    Summarize the sample lab report.
+                  </p>
+                  <p className="w-fit max-w-full rounded-xl border border-teal-100 bg-white/70 px-4 py-3 text-sm leading-6 text-slate-600">
+                    This example report contains routine measurements. A connected
+                    assistant could provide a source reference for the relevant document.
+                  </p>
+                  <span className="inline-block rounded-lg bg-white px-3 py-2 text-xs font-semibold text-teal-700">
+                    Fictional preview · Not medical advice
+                  </span>
+                </div>
               </div>
 
             </div>
@@ -428,6 +493,29 @@ export default function DoctorDashboard() {
         </div>
 
       </main>
+
+      <nav className="portal-mobile-nav" aria-label="Doctor navigation">
+        <button type="button" onClick={() => scrollToSection("overview")}>
+          <LayoutDashboard size={19} />
+          <span>Dashboard</span>
+        </button>
+        <button type="button" onClick={() => scrollToSection("patients")}>
+          <Users size={19} />
+          <span>Patients</span>
+        </button>
+        <button type="button" onClick={() => scrollToSection("records")}>
+          <FileText size={19} />
+          <span>Records</span>
+        </button>
+        <button type="button" onClick={() => scrollToSection("assistant")}>
+          <MessageCircle size={19} />
+          <span>Assistant</span>
+        </button>
+        <button type="button" onClick={handleLogout}>
+          <LogOut size={19} />
+          <span>Logout</span>
+        </button>
+      </nav>
 
     </div>
   );

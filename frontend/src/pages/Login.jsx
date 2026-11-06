@@ -87,9 +87,9 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F7F9FB] flex items-center justify-center p-5">
+    <div className="auth-page">
 
-      <div className="bg-white w-full max-w-md rounded-2xl shadow-xl p-8">
+      <div className="auth-card">
 
         {/* LOGO */}
         <Link to="/" className="flex items-center gap-2 mb-8">

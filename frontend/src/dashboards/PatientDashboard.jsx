@@ -8,9 +8,17 @@ import {
   Bell,
   HeartPulse,
   ShieldCheck,
+  CalendarDays,
+  Clock,
 } from "lucide-react";
 
 import { apiRequest, logout } from "../services/api";
+
+const demoDocuments = [
+  { name: "Complete blood count", category: "Lab report", date: "Nov 04, 2026" },
+  { name: "Annual check-up summary", category: "Visit summary", date: "Oct 28, 2026" },
+  { name: "Prescription — Sample", category: "Prescription", date: "Oct 19, 2026" },
+];
 
 export default function PatientDashboard() {
   const navigate = useNavigate();
@@ -105,35 +113,43 @@ export default function PatientDashboard() {
             </p>
           </div>
 
+          <div className="mb-6 flex items-start gap-3 rounded-xl border border-indigo-100 bg-indigo-50 p-4 text-sm text-indigo-900">
+            <ShieldCheck className="mt-0.5 shrink-0 text-indigo-600" size={19} />
+            <p>
+              <span className="font-semibold">Demo data:</span> The sample documents
+              and activity below are fictional and are not saved to your account.
+            </p>
+          </div>
+
           {/* STATISTICS */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
 
             <StatCard
               icon={<FileText />}
               title="Total Documents"
-              value="0"
-              description="Uploaded medical records"
+              value="8"
+              description="Sample documents"
             />
 
             <StatCard
               icon={<Upload />}
               title="Recent Uploads"
-              value="0"
-              description="Documents uploaded recently"
+              value="2"
+              description="Sample uploads this month"
             />
 
             <StatCard
               icon={<MessageCircle />}
               title="AI Conversations"
-              value="0"
-              description="Questions asked"
+              value="6"
+              description="Sample conversations"
             />
 
             <StatCard
               icon={<HeartPulse />}
               title="Health Records"
-              value="0"
-              description="Records in your workspace"
+              value="4"
+              description="Sample health categories"
             />
 
           </div>
@@ -172,8 +188,44 @@ export default function PatientDashboard() {
 
           </div>
 
-    
-          {/* AI ASSISTANT PLACEHOLDER */}
+          <section className="mb-8 rounded-2xl border bg-white p-5 md:p-6">
+            <div className="mb-5 flex items-center justify-between gap-3">
+              <div>
+                <h2 className="font-bold text-[#142B45]">Recent documents</h2>
+                <p className="mt-1 text-sm text-slate-500">Example files in your sample library</p>
+              </div>
+              <FileText className="shrink-0 text-teal-700" size={21} />
+            </div>
+
+            <div className="divide-y divide-slate-100">
+              {demoDocuments.map((document) => (
+                <div key={document.name} className="flex items-center gap-3 py-3">
+                  <div className="rounded-lg bg-teal-50 p-2.5 text-teal-700">
+                    <FileText size={19} />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-semibold text-slate-800">{document.name}</p>
+                    <p className="mt-1 text-xs text-slate-500">{document.category}</p>
+                  </div>
+                  <span className="hidden shrink-0 text-xs text-slate-400 sm:inline">{document.date}</span>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="mb-8 flex items-start gap-4 rounded-2xl border border-slate-200 bg-white p-5">
+            <div className="rounded-xl bg-blue-50 p-3 text-blue-700">
+              <CalendarDays size={22} />
+            </div>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">Sample upcoming visit</p>
+              <h2 className="mt-1 font-bold text-[#142B45]">General wellness check</h2>
+              <p className="mt-1 text-sm text-slate-500">Thursday, November 12 · 10:30 AM</p>
+            </div>
+            <span className="ml-auto rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700">Demo</span>
+          </section>
+
+          {/* AI ASSISTANT DEMO */}
           <div
             id="assistant"
             className="bg-white border rounded-2xl p-6 mb-8"
@@ -185,17 +237,28 @@ export default function PatientDashboard() {
 
               <div>
                 <h2 className="font-bold text-[#142B45]">
-                  AI Medical Assistant
+                  AI Assistant preview
                 </h2>
                 <p className="text-sm text-slate-500">
-                  Ask questions based on your medical documents.
+                  Example of a document-grounded conversation
                 </p>
               </div>
             </div>
 
-            <p className="text-sm text-slate-500 mt-5">
-              AI Assistant functionality is coming soon.
-            </p>
+            <div className="mt-5 max-w-2xl space-y-3">
+              <div className="ml-auto w-fit max-w-[90%] rounded-2xl rounded-br-sm bg-teal-700 px-4 py-3 text-sm text-white">
+                What does my sample blood test report include?
+              </div>
+              <div className="w-fit max-w-[95%] rounded-2xl rounded-bl-sm bg-slate-100 px-4 py-3 text-sm leading-6 text-slate-700">
+                This demo report includes example blood count measurements.
+                In a live experience, answers would reference the relevant
+                document. This sample is not medical advice.
+              </div>
+              <div className="flex items-center gap-4 text-xs text-slate-400">
+                <span className="inline-flex items-center gap-1"><FileText size={14} /> Sample source: Complete blood count</span>
+                <span className="inline-flex items-center gap-1"><Clock size={14} /> Example only</span>
+              </div>
+            </div>
           </div>
 
           {/* PRIVACY SECTION */}
