@@ -26,51 +26,27 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        {/* Patient Portal - Shared Sidebar */}
+        {/* Patient workspace */}
         <Route path="/patient" element={<PatientPortalLayout />}>
-
-          <Route
-            index
-            element={<Navigate to="dashboard" replace />}
-          />
-
-          <Route
-            path="dashboard"
-            element={<PatientDashboard />}
-          />
-
-          <Route
-            path="documents/upload"
-            element={<MedicalDocumentUpload />}
-          />
-
-          <Route
-            path="documents"
-            element={<PatientDashboard />}
-          />
-
-          <Route
-            path="assistant"
-            element={<PatientDashboard />}
-          />
-
-          <Route
-            path="profile"
-            element={<PatientDashboard />}
-          />
-
-          <Route
-            path="settings"
-            element={<PatientDashboard />}
-          />
-
+          <Route index element={<Navigate to="dashboard" replace />} />
+          <Route path="dashboard" element={<PatientDashboard />} />
+          <Route path="documents" element={<PatientDashboard />} />
+          <Route path="documents/upload" element={<MedicalDocumentUpload />} />
+          <Route path="assistant" element={<PatientDashboard />} />
+          <Route path="compare" element={<PatientDashboard />} />
+          <Route path="profile" element={<PatientDashboard />} />
         </Route>
 
-        {/* Doctor Portal */}
-        <Route
-          path="/doctor/dashboard"
-          element={<DoctorDashboard />}
-        />
+        {/* Doctor workspace */}
+        <Route path="/doctor" element={<PatientPortalLayout />}>
+          <Route index element={<Navigate to="dashboard" replace />} />
+          <Route path="dashboard" element={<DoctorDashboard />} />
+          <Route path="patients" element={<DoctorDashboard />} />
+          <Route path="documents" element={<DoctorDashboard />} />
+          <Route path="assistant" element={<DoctorDashboard />} />
+          <Route path="compare" element={<DoctorDashboard />} />
+          <Route path="profile" element={<DoctorDashboard />} />
+        </Route>
 
         {/* Fallback */}
         <Route path="*" element={<Navigate to="/" replace />} />

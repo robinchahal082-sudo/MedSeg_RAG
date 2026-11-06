@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { Activity } from "lucide-react";
 import { apiRequest } from "../services/api";
 
+const today = new Date().toISOString().split("T")[0];
+
 export default function Register() {
   const [role, setRole] = useState("patient");
 
@@ -232,7 +234,7 @@ export default function Register() {
                 name="date_of_birth"
                 value={formData.date_of_birth}
                 onChange={handleChange}
-                max={new Date().toISOString().split("T")[0]}
+                max={today}
                 className="w-full border p-3 rounded-lg mt-2"
               />
             </div>

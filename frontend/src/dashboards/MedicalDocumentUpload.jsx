@@ -2,8 +2,8 @@
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
+  AlertCircle,
   ArrowLeft,
-  Bell,
   CheckCircle2,
   CloudUpload,
   FileText,
@@ -12,6 +12,7 @@ import {
   ShieldCheck,
   Trash2,
   Upload,
+  Info,
   X,
 } from "lucide-react";
 
@@ -21,9 +22,11 @@ export default function MedicalDocumentUpload() {
 
   const [files, setFiles] = useState([]);
   const [dragActive, setDragActive] = useState(false);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState(null);
 
   const handleFiles = (selectedFiles) => {
+    if (!selectedFiles?.length) return;
+
     const pdfFiles = Array.from(selectedFiles);
     const validFiles = [];
     const errors = [];
@@ -55,13 +58,13 @@ export default function MedicalDocumentUpload() {
       return [...previous, ...newFiles];
     });
 
-    setMessage(
-      errors.length
-        ? errors.join(" ")
-        : validFiles.length
-          ? "PDF files selected successfully!"
-          : "Please select a PDF file."
-    );
+    if (errors.length) {
+      setMessage({ type: "error", text: errors.join(" ") });
+    } else if (validFiles.length) {
+      setMessage({ type: "success", text: "PDF files selected successfully." });
+    } else {
+      setMessage({ type: "error", text: "Please select a PDF file." });
+    }
 
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
@@ -82,21 +85,34 @@ export default function MedicalDocumentUpload() {
 
   const handleUpload = () => {
     if (files.length === 0) {
-      setMessage("Please select at least one PDF file.");
+      setMessage({ type: "error", text: "Please select at least one PDF file." });
       return;
     }
 
-    setMessage(
-      "Files are selected! Backend upload integration will be added in the next step."
-    );
+    setMessage({
+      type: "info",
+      text: "The backend does not provide a document upload API yet. Your selected files have not been uploaded or saved.",
+    });
   };
 
+  const MessageIcon =
+    message?.type === "error"
+      ? AlertCircle
+      : message?.type === "info"
+        ? Info
+        : CheckCircle2;
+
+  const messageStyle = {
+    error: "border border-rose-200 bg-rose-50 text-rose-800",
+    info: "border border-blue-200 bg-blue-50 text-blue-800",
+    success: "border border-teal-100 bg-teal-50 text-teal-800",
+  };
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800">
 
       {/* Main Content */}
-      <main className="w-full min-w-0">
+      <div className="w-full min-w-0">
         {/* Topbar */}
         <header className="flex items-center justify-between border-b border-slate-200 bg-white px-5 py-4 sm:px-8">
           <div>
@@ -108,9 +124,10 @@ export default function MedicalDocumentUpload() {
             </p>
           </div>
 
-          <button className="rounded-full border border-slate-200 p-2 text-slate-600 hover:bg-slate-50">
-            <Bell size={20} />
-          </button>
+          <div className="hidden items-center gap-2 rounded-full border border-teal-100 bg-teal-50 px-3 py-2 text-xs font-semibold text-teal-800 sm:flex">
+            <ShieldCheck size={16} />
+            Private &amp; secure
+          </div>
         </header>
 
         <div className="mx-auto max-w-none p-5 sm:p-8">
@@ -192,11 +209,11 @@ export default function MedicalDocumentUpload() {
             />
 
             {message && (
-              <div className="mt-4 flex items-start gap-2 rounded-xl bg-teal-50 p-3 text-sm text-teal-800">
-                <CheckCircle2 size={18} className="mt-0.5 shrink-0" />
-                <p>{message}</p>
+              <div role={message.type === "error" ? "alert" : "status"} className={`mt-4 flex items-start gap-2 rounded-xl p-3 text-sm ${messageStyle[message.type]}`}>
+                <MessageIcon size={18} className="mt-0.5 shrink-0" />
+                <p>{message.text}</p>
                 <button
-                  onClick={() => setMessage("")}
+                  onClick={() => setMessage(null)}
                   className="ml-auto"
                 >
                   <X size={16} />
@@ -290,12 +307,13 @@ export default function MedicalDocumentUpload() {
               <p className="mt-1 text-xs leading-5 text-blue-800">
                 Upload only your own medical documents or records you are
                 authorized to share. This screen currently provides a
-                frontend preview; files are not yet stored on the server.
+                local file preview; the backend upload API is not available,
+                so files are not stored on the server.
               </p>
             </div>
           </div>
         </div>
-      </main>
+      </div>
     </div>
   );
 }

@@ -60,8 +60,6 @@ export default function Login() {
         JSON.stringify(result.user)
       );
 
-      console.log("Logged-in user:", result.user);
-
       // Redirect according to user role
       if (result.user.role === "patient") {
         navigate("/patient/dashboard", { replace: true });
