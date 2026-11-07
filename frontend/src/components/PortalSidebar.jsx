@@ -19,6 +19,7 @@ const navigation = {
     { label: "Dashboard", mobileLabel: "Home", icon: LayoutDashboard, path: "/patient/dashboard" },
     { label: "My Documents", mobileLabel: "Documents", icon: FileText, path: "/patient/documents" },
     { label: "Upload Document", mobileLabel: "Upload", icon: Upload, path: "/patient/documents/upload" },
+    { label: "Doctor Access", mobileLabel: "Doctor Access", icon: ShieldCheck, path: "/patient/connections" },
     { label: "AI Assistant (RAG)", mobileLabel: "Assistant", icon: MessageCircle, path: "/patient/assistant" },
     { label: "Compare Reports", mobileLabel: "Compare", icon: GitCompareArrows, path: "/patient/compare" },
     { label: "Profile", mobileLabel: "Profile", icon: UserRound, path: "/patient/profile" },

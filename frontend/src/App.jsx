@@ -1,4 +1,3 @@
-
 import {
   BrowserRouter,
   Routes,
@@ -32,6 +31,7 @@ function App() {
           <Route path="dashboard" element={<PatientDashboard />} />
           <Route path="documents" element={<PatientDashboard />} />
           <Route path="documents/upload" element={<MedicalDocumentUpload />} />
+          <Route path="connections" element={<PatientDashboard />} />
           <Route path="assistant" element={<PatientDashboard />} />
           <Route path="compare" element={<PatientDashboard />} />
           <Route path="profile" element={<PatientDashboard />} />

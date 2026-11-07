@@ -13,6 +13,11 @@ export default function PatientPortalLayout() {
   const loading =
     profileResult?.attempt !== requestNumber ||
     profileResult?.requiredRole !== requiredRole;
+  const updateAuthenticatedUser = (updatedUser) => {
+    setProfileResult((current) => (
+      current ? { ...current, user: updatedUser } : current
+    ));
+  };
 
   useEffect(() => {
     let active = true;
@@ -104,7 +109,7 @@ export default function PatientPortalLayout() {
     <div className="min-h-screen bg-[#F5F8FA]">
       <PortalSidebar role={requiredRole} user={user} />
       <main className="min-w-0 pb-20 md:ml-64 md:pb-0">
-        <Outlet context={{ user }} />
+        <Outlet context={{ user, updateAuthenticatedUser }} />
       </main>
     </div>
   );
